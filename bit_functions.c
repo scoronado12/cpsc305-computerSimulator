@@ -22,4 +22,11 @@ int bit_test(int value, int bit_pos){
 	}
 
 	return 0;
+
+void bit_set(int *value, int bit_pos){
+
+}
+
+
+
 }
