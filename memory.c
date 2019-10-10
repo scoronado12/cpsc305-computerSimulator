@@ -1,5 +1,5 @@
 #include "memory.h"
-
+#include "bit_functions.h"
 /* *
  * Simulate the memory chip represented by a 2D array
  * Direction was seen on pg 67 of the PDF under heading
@@ -35,7 +35,5 @@ unsigned char mem_get(unsigned int row_selected, unsigned int col_selected){
 void mem_put(unsigned int row_selected, unsigned int col_selected, unsigned char b){
     //Set this spot in the array to the unsigned char b that was passed in 
     mem_chip.mem_arr[bit_find(row_selected)][bit_find(col_selected)] = b;
-    
-
 
 }
