@@ -8,7 +8,7 @@
 
 void memory_store(int address, unsigned char value){
     
-    mem_chip.mem_arr[MEM_ROW][MEM_COL] = value;
+    mem_chip.mem_arr[MEM_ROW][MEM_COL] = decoder(value);
 
 }
 
@@ -24,11 +24,13 @@ unsigned int memory_fetch_word(int address){
 }
 
 void memory_dump(int start_address, int num_bytes){
+    //may need a hand with this one
 
 }
 
 void memory_store_word(int address, unsigned int value){
-    
+
+    mem_chip.mem_arr[MEM_ROW][MEM_COL] = value;
 
 }
 
