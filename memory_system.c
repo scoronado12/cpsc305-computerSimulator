@@ -2,30 +2,34 @@
 #include "memory_system.h"
 #include "memory.h"
 #include "decoder.h"
-
-
+#define MEM_ROW address/8%8
+#define MEM_COL address%8
 void memory_store(int address, unsigned char value){
     
     
-    mem_chip.mem_arr[address / 8 % 8][address % 8] = value;
+    mem_chip.mem_arr[MEM_ROW][MEM_COL] = value;
 
 }
 
 
 unsigned char memory_fetch(int address){
     
-    return mem_chip.mem_arr[address / 8 % 8][address % 8];
+    return mem_chip.mem_arr[MEM_ROW][MEM_COL];
 
 }
 
 unsigned int memory_fetch_word(int address){
-    return decoder(mem_chip.mem_arr[address / 8 % 8][address % 8]);
+    return decoder(mem_chip.mem_arr[MEM_ROW][MEM_COL]);
 }
 
 void memory_dump(int start_address, int num_bytes){
 
 }
 
+void memory_store_word(int address, unsigned int value){
+    
+
+}
 
 void load_memory(char *filename){
 
