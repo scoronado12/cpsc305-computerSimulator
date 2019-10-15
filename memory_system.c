@@ -5,8 +5,12 @@
 
 
 void memory_store(int address, unsigned char value){
-    unsigned int decoded_val = decoder(value);
+    
+    
+    mem_chip.mem_arr[address / 8 % 8][address % 8] = value;
+
 }
+
 
 unsigned char memory_fetch(int address){
     
