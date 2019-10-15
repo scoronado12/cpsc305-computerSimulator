@@ -2,10 +2,11 @@
 #include "memory_system.h"
 #include "memory.h"
 #include "decoder.h"
-#define MEM_ROW address/8%8
-#define MEM_COL address%8
+
+#define MEM_ROW address/32%32
+#define MEM_COL address%32
+
 void memory_store(int address, unsigned char value){
-    
     
     mem_chip.mem_arr[MEM_ROW][MEM_COL] = value;
 
