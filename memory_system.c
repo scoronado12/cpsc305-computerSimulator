@@ -6,33 +6,22 @@
 
 void memory_store(int address, unsigned char value){
     unsigned int decoded_val = decoder(value);
-    //TODO associate with address
 }
 
 unsigned char memory_fetch(int address){
-
-    for (int i = 0; i <= 32; i++){
-        for (int j = 0; j <= 32; j++){
-            if (address == mem_chip.mem_arr[i][j]){
-                return mem_chip.mem_arr[i][j];//TODO look more into this check, address is not comparable to contents of the 2d arr
-            }
-        }
-    }
+    
+    return mem_chip.mem_arr[address / 8 % 8][address % 8];
 
 }
 
 unsigned int memory_fetch_word(int address){
+    return decoder(mem_chip.mem_arr[address / 8 % 8][address % 8]);
+}
 
-    for (int i = 0; i <= 32; i++){
-        for (int j = 0; j <= 32; j++){
-            if (address == mem_chip.mem_arr[i][j]){
-                return decoder(mem_chip.mem_arr[i][j]); //TODO same idea here as memory_fetch()
-            }
-
-        }
-    }
+void memory_dump(int start_address, int num_bytes){
 
 }
+
 
 void load_memory(char *filename){
 
