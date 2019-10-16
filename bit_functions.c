@@ -17,9 +17,17 @@ int bit_find(int value){
 
 int bit_test(int value, int bit_pos){
 	// Will return 0 if false, 1 if true
-	if(CHECK_BIT(value, bit_pos)){
-		return 1;
-	}
-
-	return 0;
+	return CHECK_BIT(value, bit_pos); //check bit for every value that is passed in
+    
 }
+
+void bit_set(int *value, int bit_pos){
+
+    *value |= 1 <<bit_pos;
+}
+
+void bit_clear(int *value, int bit_pos){
+
+   *value &= ~(1 << bit_pos); 
+
+} 
