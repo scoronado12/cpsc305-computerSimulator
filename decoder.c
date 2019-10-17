@@ -10,5 +10,5 @@
 */
 
 unsigned int decoder(unsigned char b) {
-	return 1 << (b & DECODER_BITMASK);
+	return DECODER_SHIFTER << (b & DECODER_BITMASK);
 }

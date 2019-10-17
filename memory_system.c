@@ -20,7 +20,9 @@ unsigned char memory_fetch(int address){
 }
 
 unsigned int memory_fetch_word(int address){
+    //address = decoder(address);
     return decoder(mem_chip.mem_arr[MEM_ROW][MEM_COL]);
+   // return mem_chip.mem_arr[MEM_ROW][MEM_COL];
 }
 
 void memory_dump(int start_address, int num_bytes){
