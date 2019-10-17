@@ -27,7 +27,14 @@ unsigned int memory_fetch_word(int address){
 
 void memory_dump(int start_address, int num_bytes){
     //may need a hand with this one
-
+	for(int i = 0; i < num_bytes; i++){
+	    printf("0x%04x (0d%04d) ", start_address, start_address);
+	    unsigned char bytefetch = memory_fetch(start_address + i);
+	    for(int j = 0;j < 8; j++){
+		printf("0x%02x ", bytefetch);
+	    }
+	    printf("\n");
+	} 
 }
 
 void memory_store_word(int address, unsigned int value){
