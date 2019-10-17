@@ -42,16 +42,18 @@ void load_memory(char *filename){
      
     fp = fopen(filename, "r");
     
-    char data_buff[20];
+    char data_buff[10];
     while(1){
         if (fscanf(fp, "%d", data_buff) == EOF){
             break;
-        } else{
-            //strcpy(/*SOME SORT OF FUNC IN THIS FILE */, content);
-            //TODO First check if the entire file is loaded into our data_buff
-            //data_buff[0] is going to equal the starting address (check pg 67)
-            
         }
     }    
+    char add = data_buff[0];
+    int starting_addr = (int) add;
+//      printf("Value of 'add': %d\n", starting_addr);
+    for(int i = 1; i < 10; i++){
+//	printf("The value: %x\nThe address: %d\n", data_buff[i], starting_addr + (i-1));  
+	memory_store_word(starting_addr + (i-1), data_buff[i]);
+    }   
 
 }
