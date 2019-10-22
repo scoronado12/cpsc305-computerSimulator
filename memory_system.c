@@ -51,7 +51,7 @@ void load_memory(char *filename){
     
     char data_buff[10];
     while(1){
-        if (fscanf(fp, "%d", data_buff) == EOF){
+        if (fscanf(fp, "%x", data_buff) == EOF){ //changed from %d to %x per gusty's instructions
             break;
         }
     }    
