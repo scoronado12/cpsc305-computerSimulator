@@ -4,7 +4,7 @@
 #include "decoder.h"
 
 #define MEM_ROW (address/32)%32
-#define MEM_COL address%32
+#define MEM_COL (address)%32
 
 void memory_store(int address, unsigned char value){
     
@@ -38,8 +38,17 @@ void memory_dump(int start_address, int num_bytes){
 }
 
 void memory_store_word(int address, unsigned int value){
+    //split bytes
+    unsigned byte1 = value & 0xff;
+    unsigned byte2 = (value >> 8) & 0xff;
+    unsigned byte3 = (value >> 16) & 0xff;
+    unsigned byte4 = (value >> 24) & 0xff;
 
-    mem_chip.mem_arr[MEM_ROW][MEM_COL] = value;
+    //store the memory
+    memory_store(address, byte1);
+    memory_store(address + 1, byte2);
+    memory_store(address + 2, byte3);
+    memory_store(address + 3, byte4);
 
 }
 
@@ -51,7 +60,7 @@ void load_memory(char *filename){
     
     char data_buff[10];
     while(1){
-        if (fscanf(fp, "%x", data_buff) == EOF){ //changed from %d to %x per gusty's instructions
+        if (fscanf(fp, "%d", data_buff) == EOF){ //changed from %d to %x per gusty's instructions
             break;
         }
     }    
