@@ -1,4 +1,5 @@
 #include "bit_functions.h"
+#include "memory_system.h"
 #include "cpu.h"
 
 int registers[16];
@@ -46,7 +47,7 @@ void step(){
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
-          memory_store_word(address);
+          memory_store_word(address, reg);
           pc += 4;
           
           break; 
