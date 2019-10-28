@@ -1,4 +1,6 @@
 #include "bit_functions.h"
+#include "cpu.h"
+
 int registers[16];
 int cpsr; //current prog status register
 
@@ -15,8 +17,16 @@ int get_cpsr(){
 }
 
 void step(){
-   switch (opcode) {
-       case LDR:
+    int pc = cpsr; //felt logical
+    unsigned int reg;
+    unsigned int address; 
+
+    int inst = registers[pc]; // fetch
+    int opcode = inst >> 24;
+
+
+   switch (opcode) {// decode
+       case LDR: //execute
            reg = inst >> 16 & 0xff;
            address = inst & 0xffff;
            if (address > 1023 || reg > 15) {
