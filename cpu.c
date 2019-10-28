@@ -40,6 +40,15 @@ void step(){
            break;
        case STR:
           //memory store word
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg >15){
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+          memory_store_word(address);
+          pc += 4;
+          
           break; 
        case ADD:
           //add
@@ -66,7 +75,6 @@ void step(){
        case BLT:
          //branch less than
           break;
-
        case BGT:
           //branch greater than
           break;
