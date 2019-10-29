@@ -131,21 +131,32 @@ void step(){
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
+
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          
-          if (r1 == r2){
+
+          if (registers[r1] == registers[r2]){
+              bit_set(&cpsr, Z);
+              bit_clear(&cpsr, LT);
+              bit_clear(&cpsr, GT);
               // Z set to 1
-          } else if (r1 < r2){
+          } else if (registers[r1] < registers[r2]){
+              bit_set(&cpsr, LT);
+              bit_clear(&cpsr, Z);
+              bit_clear(&cpsr, GT);
 
+          } else if (registers[r1] > registers[r2]){
+              bit_set(&cpsr, GT);
+              bit_clear(&cpsr, Z);
+              bit_clear(&cpsr, LT);
+          
+          } else {
 
-          } else if (r1 > r2){
-
+              // Z set to 0
           }
-
-
+          break;
        case B:
-          /*  
+          
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -154,16 +165,25 @@ void step(){
           }
 
           dest = (inst >> 16) & 0xff;
-          r1 = (inst >> 8) & 0xff;
-          r2 = (inst >> 0) & 0xff;
-          */
-
+          pc = address;
+          pc += 4;
           break;
        case BEQ:
           //branch equal to
+          reg = inst >> 16 & 0xff;
+
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          //do more stuff
+          pc += 4;
           break;
        case BNE:
          //branch not equal
+         if ()
        case BLT:
          //branch less than
           break;
