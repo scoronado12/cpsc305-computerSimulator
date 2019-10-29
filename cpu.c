@@ -17,12 +17,19 @@ int get_cpsr(){
     return cpsr;
 }
 
+
+void show_regs(){
+    for (int i = 0; i <= 16; i++)
+        printf("Register %d: %d", i, get_reg(i));
+}
+
+
 void step(){
-    int pc = cpsr; //felt logical
+    int pc = registers[PC]; 
     unsigned int reg;
     unsigned int address; 
-
-    int inst = registers[pc]; // fetch
+    int dest, r1, r2;
+    unsigned int inst = memory_fetch_word(registers[PC]); // fetch
     int opcode = inst >> 24;
 
 
@@ -39,6 +46,10 @@ void step(){
 
            pc += 4;
            break;
+       case LDI:
+           //LDI
+       case LDX:
+           //LDI
        case STR:
           //memory store word
           reg = inst >> 16 & 0xff;
@@ -52,34 +63,143 @@ void step(){
           
           break; 
        case ADD:
-          //add
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          registers[dest] = registers[r1] + registers[r2];
+          pc += 4;
           break;
        case SUB:
-          //subtract
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          registers[dest] = registers[r1] - registers[r2];
+
+          pc += 4;
+
           break;
        case MUL:
           //multiply
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          registers[dest] = registers[r1] * registers[r2];
+          pc += 4;
           break;
        case DIV:
           //divide
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          registers[dest] = registers[r1] / registers[r2];
+          pc += 4;
+
           break;
        case CMP:
           //compare
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+
+          if (registers[r1] == registers[r2]){
+              bit_set(&cpsr, Z);
+              bit_clear(&cpsr, LT);
+              bit_clear(&cpsr, GT);
+              // Z set to 1
+          } else if (registers[r1] < registers[r2]){
+              bit_set(&cpsr, LT);
+              bit_clear(&cpsr, Z);
+              bit_clear(&cpsr, GT);
+
+          } else if (registers[r1] > registers[r2]){
+              bit_set(&cpsr, GT);
+              bit_clear(&cpsr, Z);
+              bit_clear(&cpsr, LT);
+          
+          } else {
+
+              // Z set to 0
+          }
+          break;
        case B:
-          //branch
+          
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          pc = address;
+          pc += 4;
           break;
        case BEQ:
           //branch equal to
+          reg = inst >> 16 & 0xff;
+
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          //do more stuff
+          pc += 4;
           break;
        case BNE:
          //branch not equal
+         if ()
        case BLT:
          //branch less than
           break;
        case BGT:
           //branch greater than
           break;
-
    }
+
+   registers[PC] += pc; //increase program counter by 4 each time
  
 }
+
+void step_n(int n){
+    for (int i = 0; i <= n; i++){
+        step();
+    }
+
+}
+
