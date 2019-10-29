@@ -74,7 +74,7 @@ void step(){
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
           registers[dest] = registers[r1] + registers[r2];
-
+          pc += 4;
           break;
        case SUB:
           reg = inst >> 16 & 0xff;
@@ -89,7 +89,7 @@ void step(){
           r2 = (inst >> 0) & 0xff;
           registers[dest] = registers[r1] - registers[r2];
 
-
+          pc += 4;
 
           break;
        case MUL:
@@ -105,7 +105,7 @@ void step(){
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
           registers[dest] = registers[r1] * registers[r2];
-
+          pc += 4;
           break;
        case DIV:
           //divide
@@ -120,6 +120,8 @@ void step(){
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
           registers[dest] = registers[r1] / registers[r2];
+          pc += 4;
+
           break;
        case CMP:
           //compare
@@ -129,10 +131,33 @@ void step(){
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          
+          if (r1 == r2){
+              // Z set to 1
+          } else if (r1 < r2){
+
+
+          } else if (r1 > r2){
+
+          }
 
 
        case B:
-          //branch
+          /*  
+          reg = inst >> 16 & 0xff;
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) {
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+          dest = (inst >> 16) & 0xff;
+          r1 = (inst >> 8) & 0xff;
+          r2 = (inst >> 0) & 0xff;
+          */
+
           break;
        case BEQ:
           //branch equal to
@@ -150,3 +175,11 @@ void step(){
    registers[PC] += pc; //increase program counter by 4 each time
  
 }
+
+void step_n(int n){
+    for (int i = 0; i <= n; i++){
+        step();
+    }
+
+}
+
