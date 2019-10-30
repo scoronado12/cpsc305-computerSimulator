@@ -66,6 +66,7 @@ void step(){
            int offset = inst >> 8 & 0xff;
            r1 = inst & 0xff;
            registers[dest] = memory_fetch_word(registers[r1] + offset);
+           pc += 4;
 
 
            break;
