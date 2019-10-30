@@ -151,9 +151,13 @@ void step(){
               bit_clear(&cpsr, LT);
           
           } else {
-
-              // Z set to 0
+            printf("CMP Invalid, clearing...\n");
+            bit_clear(&cpsr, GT);
+            bit_clear(&cpsr, LT);
+            bit_clear(&cpsr, Z);
+          
           }
+          pc += 4;
           break;
        case B:
           
@@ -183,7 +187,6 @@ void step(){
           break;
        case BNE:
          //branch not equal
-         if ()
        case BLT:
          //branch less than
           break;
