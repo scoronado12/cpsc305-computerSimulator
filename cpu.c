@@ -47,11 +47,29 @@ void step(){
            pc += 4;
            break;
        case LDI:
-           //LDI
+           //LDI memory_fetch
+           reg = inst >> 16 & 0xff;
+           address = inst & 0xffff;
+           if (address > 1023 || reg > 15) {
+               printf("Address/Register out of bounds.\n");
+               exit(1);
+           }
+           registers[reg] = memory_fetch(address);
+           printf("reg: %d, reg val: 0x%x08x, address: 0x%04x\n", reg, registers[reg], address);
 
+           pc += 4;
 
+           break;
        case LDX:
-           //LDX
+          // LDX 
+           dest = inst >> 16 & 0xff;
+           int offset = inst >> 8 & 0xff;
+           r1 = inst & 0xff;
+           registers[dest] = memory_fetch_word(registers[r1] + offset);
+           pc += 4;
+
+
+           break;
        case STR:
           //memory store word
           reg = inst >> 16 & 0xff;
@@ -170,10 +188,8 @@ void step(){
               exit(1);
           }
 
-          dest = (inst >> 16) & 0xff;
 	  //notice how there is no if or check_bit() condition
           pc = address; //set pc to address unconditionally
-          pc += 4;
           break;
        case BEQ:
           //branch equal to
@@ -185,56 +201,61 @@ void step(){
               exit(1);
           }
 
-	  if (bit_test(&cpsr, Z)){ //if cpsr's bit Z is turned on
-	      pc = address
-	  }
+          if (bit_test(cpsr, Z)){ //if cpsr's bit Z is turned on
+              pc = address;
+          } else {
+              pc += 4;
+          }
 
           //do more stuff
-          pc += 4;
           break;
        case BNE:
-         //branch not equal
-	  reg = inst >> 16 & 0xff;
-
+          reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) { //check if do-able
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
-
-	  if (!bit_test(&cpsr, Z)){ //aka if this is true
-	      pc = address //set PC to address
-	  }
+          
+          if (!bit_test(cpsr, Z)){ //aka if this is true
+              pc = address; //set PC to address
+          } else {
+              pc += 4;
+          }
+          break;
        case BLT:
          //branch less than
-	  reg = inst >> 16 & 0xff;
-
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) { //check if do-able
-              printf("Address/Register out of bounds.\n");
-              exit(1);
-          }
-
-	  if (bit_test(&cpsr, LT)){ //aka if this is true
-	      pc = address //set PC to address
-	  }
-          break;
+         reg = inst >> 16 & 0xff;
+         address = inst & 0xffff;
+         if (address > 1023 || reg > 15) { //check if do-able
+             printf("Address/Register out of bounds.\n");
+             exit(1);
+         }
+         
+         if (bit_test(cpsr, LT)){ //aka if this is true
+             pc = address; //set PC to address
+         }else {
+             pc += 4;
+         }
+         break;
        case BGT:
-	  reg = inst >> 16 & 0xff;
-
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) { //check if do-able
-              printf("Address/Register out of bounds.\n");
-              exit(1);
+         reg = inst >> 16 & 0xff;
+         address = inst & 0xffff;
+         if (address > 1023 || reg > 15) { //check if do-able
+             printf("Address/Register out of bounds.\n");
+             exit(1);
           }
-
-	  if (bit_test(&cpsr, GT)){ //aka if this is true
-	      pc = address //set PC to address
-	  }
+          
+          if (bit_test(cpsr, GT)){ //aka if this is true
+              pc = address; //set PC to address
+          } else {
+              pc += 4;
+          }
 
           break;
    }
 
+   
    registers[PC] += pc; //increase program counter by 4 each time
  
 }
