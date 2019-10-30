@@ -48,8 +48,10 @@ void step(){
            break;
        case LDI:
            //LDI
+
+
        case LDX:
-           //LDI
+           //LDX
        case STR:
           //memory store word
           reg = inst >> 16 & 0xff;
@@ -151,10 +153,10 @@ void step(){
               bit_clear(&cpsr, LT);
           
           } else {
-            printf("CMP Invalid, clearing...\n");
-            bit_clear(&cpsr, GT);
-            bit_clear(&cpsr, LT);
-            bit_clear(&cpsr, Z);
+              printf("CMP Invalid, clearing...\n");
+              bit_clear(&cpsr, GT);
+              bit_clear(&cpsr, LT);
+              bit_clear(&cpsr, Z);
           
           }
           pc += 4;
@@ -170,7 +172,7 @@ void step(){
 
           dest = (inst >> 16) & 0xff;
 	  //notice how there is no if or check_bit() condition
-          pc = address;
+          pc = address; //set pc to address unconditionally
           pc += 4;
           break;
        case BEQ:
@@ -183,7 +185,7 @@ void step(){
               exit(1);
           }
 
-	  if (bit_test(&cpsr, Z)){
+	  if (bit_test(&cpsr, Z)){ //if cpsr's bit Z is turned on
 	      pc = address
 	  }
 
