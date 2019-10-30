@@ -47,11 +47,23 @@ void step(){
            pc += 4;
            break;
        case LDI:
-           //LDI
+           //LDI memory_fetch
+           reg = inst >> 16 & 0xff;
+           address = inst & 0xffff;
+           if (address > 1023 || reg > 15) {
+               printf("Address/Register out of bounds.\n");
+               exit(1);
+           }
+           registers[reg] = memory_fetch(address);
+           printf("reg: %d, reg val: 0x%x08x, address: 0x%04x\n", reg, registers[reg], address);
 
+           pc += 4;
 
+           break;
        case LDX:
            //LDX
+
+           break;
        case STR:
           //memory store word
           reg = inst >> 16 & 0xff;
