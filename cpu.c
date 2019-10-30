@@ -61,8 +61,7 @@ void step(){
 
            break;
        case LDX:
-           //LDX
-
+           //TODO LDX
            break;
        case STR:
           //memory store word
