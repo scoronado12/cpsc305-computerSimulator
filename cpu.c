@@ -169,6 +169,7 @@ void step(){
           }
 
           dest = (inst >> 16) & 0xff;
+	  //notice how there is no if or check_bit() condition
           pc = address;
           pc += 4;
           break;
@@ -177,21 +178,58 @@ void step(){
           reg = inst >> 16 & 0xff;
 
           address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
+          if (address > 1023 || reg > 15) { //check if do-able
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
+
+	  if (bit_test(&cpsr, Z)){
+	      pc = address
+	  }
 
           //do more stuff
           pc += 4;
           break;
        case BNE:
          //branch not equal
+	  reg = inst >> 16 & 0xff;
+
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) { //check if do-able
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+	  if (!bit_test(&cpsr, Z)){ //aka if this is true
+	      pc = address //set PC to address
+	  }
        case BLT:
          //branch less than
+	  reg = inst >> 16 & 0xff;
+
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) { //check if do-able
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+	  if (bit_test(&cpsr, LT)){ //aka if this is true
+	      pc = address //set PC to address
+	  }
           break;
        case BGT:
-          //branch greater than
+	  reg = inst >> 16 & 0xff;
+
+          address = inst & 0xffff;
+          if (address > 1023 || reg > 15) { //check if do-able
+              printf("Address/Register out of bounds.\n");
+              exit(1);
+          }
+
+	  if (bit_test(&cpsr, GT)){ //aka if this is true
+	      pc = address //set PC to address
+	  }
+
           break;
    }
 
