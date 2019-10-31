@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "bit_functions.h"
 #include "memory_system.h"
 #include "cpu.h"
