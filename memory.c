@@ -21,7 +21,7 @@ unsigned char mem_get(unsigned int row_selected, unsigned int col_selected){
            if (mem_chip.mem_arr[i][j] == mem_chip.mem_arr[row_selected][col_selected]){
               mem = mem_chip.mem_arr[i][j]; //set it to mem 
            } 
-        }
+        }   
     }*/
 
 }
