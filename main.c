@@ -13,8 +13,6 @@ int main(int argc, char **argv) {
     
     printf("bit_find: %d\n", bit_find(8));
     
-    memory_fill(0, 0xff, 100);
-    
     memory_store_word(4, 101010);
     memory_store(0x111, 100);
     
