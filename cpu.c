@@ -272,6 +272,21 @@ void step(){
 
          pc += 4;
          break;
+        case BL:
+         /* 
+          * This also is an attempt to do something based on assumptions alone */
+         reg = inst >> 16 & 0xff;
+         address = inst & 0xffff;
+         if (address > 1023 || reg > 15) {
+             printf("Address/Register out of bounds.\n");
+             exit(1);
+         }
+
+         
+	  //notice how there is no if or check_bit() condition
+         pc = address; //set pc to address unconditionally
+         registers[R14] = pc;
+         break;
           
    }
 
