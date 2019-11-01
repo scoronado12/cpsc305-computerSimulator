@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     
     printf("memory_fetch(0x111): 0x%02x\n", memory_fetch(0x111));
     
-    load_memory("mem1.txt");
+    load_memory("mem_load.txt");
     printf("memory_fetch_word(12): 0x%08x\n", memory_fetch_word(12));
 
     memory_dump(270, 20);
