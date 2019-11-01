@@ -8,7 +8,6 @@
 
 void memory_store(int address, unsigned char value){
     
-    //mem_chip.mem_arr[MEM_ROW][MEM_COL] = decoder(value);
     unsigned int lower5 = (address) & 0x1f;
     unsigned int upper5 = (address >> 5) & 0x1f;
     
