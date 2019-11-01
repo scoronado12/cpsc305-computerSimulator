@@ -12,6 +12,7 @@
 #define BNE 12
 #define BLT 13
 #define BGT 14
+#define MOV 15
 
 #define Z 1
 #define LT 2
