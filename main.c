@@ -8,6 +8,7 @@
 #include "cpu.h"
 
 int main(int argc, char **argv) {
+
     printf("0x%08x\n", decoder(4));
     printf("0x%08x\n", decoder(1));
     
@@ -88,6 +89,10 @@ int main(int argc, char **argv) {
 			scanf("%s", file_name);
 			load_memory(file_name);
 		}
+        else if (strcmp(cmd, "exit") == 0) {
+            printf("Bye!...\n");
+            exit(0);
+        }
 		else {
 			printf("invalid cmd\n");
 		}		
