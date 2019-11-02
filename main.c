@@ -51,7 +51,7 @@ int main(int argc, char **argv) {
     printf("PC: %d\n", get_reg(PC));
     step();
     printf("R0: %d\n", get_reg(R0));
-    
+ 
     while (1) {
 		char cmd[100], file_name[100];
 		int num, num1;
