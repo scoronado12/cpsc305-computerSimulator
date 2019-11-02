@@ -33,10 +33,12 @@ void step(){
     int dest, r1, r2;
     unsigned int inst = memory_fetch_word(registers[PC]); // fetch
     int opcode = inst >> 24;
-
+    printf("Opcode: %d\n" , opcode);
 
    switch (opcode) {// decode
        case LDR: //execute
+           printf("LDR detected\n");
+
            reg = inst >> 16 & 0xff;
            address = inst & 0xffff;
            if (address > 1023 || reg > 15) {
@@ -85,6 +87,7 @@ void step(){
           
           break; 
        case ADD:
+          printf("ADD detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -99,6 +102,8 @@ void step(){
           pc += 4;
           break;
        case SUB:
+          printf("SUB detected\n");
+
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {

@@ -1,4 +1,4 @@
-TARGET = progGusty
+TARGET = mySim
 LIBS = -lm
 CC = gcc
 CFLAGS = -g -Wall -std=c11
