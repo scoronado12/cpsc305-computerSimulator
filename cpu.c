@@ -22,7 +22,7 @@ int get_cpsr(){
 
 void show_regs(){
     for (int i = 0; i <= 16; i++)
-        printf("Register %d: %d", i, get_reg(i));
+        printf("Register %d: %d \n", i, get_reg(i));
 }
 
 
@@ -33,10 +33,12 @@ void step(){
     int dest, r1, r2;
     unsigned int inst = memory_fetch_word(registers[PC]); // fetch
     int opcode = inst >> 24;
-
+    printf("Opcode: %d\n" , opcode);
 
    switch (opcode) {// decode
        case LDR: //execute
+           printf("LDR detected\n");
+
            reg = inst >> 16 & 0xff;
            address = inst & 0xffff;
            if (address > 1023 || reg > 15) {
@@ -85,6 +87,7 @@ void step(){
           
           break; 
        case ADD:
+          printf("ADD detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -99,6 +102,8 @@ void step(){
           pc += 4;
           break;
        case SUB:
+          printf("SUB detected\n");
+
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -255,6 +260,39 @@ void step(){
           }
 
           break;
+       case MOV:
+         /*  WARNING: this may or may not work correctly */ 
+         reg = inst >> 16 & 0xff;
+         address = inst & 0xffff;
+         if (address > 1023 || reg > 15) {
+             printf("Address/Register out of bounds.\n");
+             exit(1);
+         }
+
+         r1 = (inst >> 8) & 0xff;
+         r2 = (inst >> 0) ^ 0xff;
+         registers[r1] = registers[r2];
+
+         bit_clear(&cpsr, registers[r1]);
+
+         pc += 4;
+         break;
+        case BL:
+         /* 
+          * This also is an attempt to do something based on assumptions alone */
+         reg = inst >> 16 & 0xff;
+         address = inst & 0xffff;
+         if (address > 1023 || reg > 15) {
+             printf("Address/Register out of bounds.\n");
+             exit(1);
+         }
+
+         
+	  //notice how there is no if or check_bit() condition
+         pc = address; //set pc to address unconditionally
+         registers[R14] = pc;
+         break;
+          
    }
 
    
