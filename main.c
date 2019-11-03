@@ -8,6 +8,7 @@
 #include "cpu.h"
 
 int main(int argc, char **argv) {
+
     printf("0x%08x\n", decoder(4));
     printf("0x%08x\n", decoder(1));
     
@@ -18,7 +19,7 @@ int main(int argc, char **argv) {
     
     printf("memory_fetch(0x111): 0x%02x\n", memory_fetch(0x111));
     
-    load_memory("mem1.txt");
+    load_memory("mem_load.txt");
     printf("memory_fetch_word(12): 0x%08x\n", memory_fetch_word(12));
 
     memory_dump(270, 20);
@@ -51,7 +52,7 @@ int main(int argc, char **argv) {
     printf("PC: %d\n", get_reg(PC));
     step();
     printf("R0: %d\n", get_reg(R0));
-    
+ 
     while (1) {
 		char cmd[100], file_name[100];
 		int num, num1;
@@ -88,6 +89,10 @@ int main(int argc, char **argv) {
 			scanf("%s", file_name);
 			load_memory(file_name);
 		}
+        else if (strcmp(cmd, "exit") == 0) {
+            printf("Bye!...\n");
+            exit(0);
+        }
 		else {
 			printf("invalid cmd\n");
 		}		
