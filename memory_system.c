@@ -80,8 +80,9 @@ void load_memory(char *filename){
             break;
         }
         
-        memory_store_word(addr += 4, data_buff);
-        
+        //memory_store_word(addr += 4, data_buff);
+        memory_store_word(addr, data_buff);
+        addr += 4;
     }    
     
     /*
