@@ -296,7 +296,9 @@ void step(){
    }
 
    
-   registers[PC] += pc; //increase program counter by 4 each time
+   
+   registers[PC] = pc; //edit made
+   //registers[PC] += pc; //increase program counter by 4 each time
  
 }
 
