@@ -51,6 +51,7 @@ void step(){
            pc += 4;
            break;
        case LDI:
+	   printf("LDI detected\n");
            //LDI memory_fetch
            reg = inst >> 16 & 0xff;
            address = inst & 0xffff;
@@ -65,7 +66,9 @@ void step(){
 
            break;
        case LDX:
-          // LDX 
+          // LDX
+	   printf("LDX detected\n");
+	   
            dest = inst >> 16 & 0xff;
            int offset = inst >> 8 & 0xff;
            r1 = inst & 0xff;
@@ -76,6 +79,8 @@ void step(){
            break;
        case STR:
           //memory store word
+
+	  printf("STR detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg >15){
@@ -120,6 +125,8 @@ void step(){
 
           break;
        case MUL:
+
+	  printf("DIV detected\n");
           //multiply
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
@@ -135,6 +142,7 @@ void step(){
           pc += 4;
           break;
        case DIV:
+	  printf("DIV detected\n");
           //divide
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
@@ -151,6 +159,7 @@ void step(){
 
           break;
        case CMP:
+	  printf("CMP detected\n");
           //compare
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;

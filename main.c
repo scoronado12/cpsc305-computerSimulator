@@ -89,11 +89,15 @@ int main(int argc, char **argv) {
 			scanf("%s", file_name);
 			load_memory(file_name);
 		}
-        else if (strcmp(cmd, "exit") == 0) {
-            printf("Bye!...\n");
-            exit(0);
-        }
-		else {
+		else if (strcmp(cmd, "exit") == 0 || strcmp(cmd,"quit") == 0) {
+		    printf("Bye!...\n");
+		    exit(0);
+		}
+		else if (strcmp(cmd, "help") == 0){
+
+	            printf("Available commands: step_n\n regs\n dump \nset_reg\n step\n exit\n");
+
+		}else {
 			printf("invalid cmd\n");
 		}		
 	}
