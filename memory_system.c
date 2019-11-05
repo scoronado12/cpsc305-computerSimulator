@@ -42,9 +42,9 @@ void memory_dump(int start_address, int num_bytes){
 	for(int i = 0; i < num_bytes; i++){
 	    printf("0x%04x (0d%04d) ", start_address, start_address);
 	    unsigned char bytefetch = memory_fetch(start_address + i);
-	    for(int j = 0;j < 8; j++){
-		printf("0x%02x ", bytefetch);
-	    }
+	    //for(int j = 0;j < 1; j++){
+        printf("0x%02x ", bytefetch);
+	    //}
 	    printf("\n");
 	} 
 }

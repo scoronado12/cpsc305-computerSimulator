@@ -21,7 +21,7 @@ int get_cpsr(){
 
 
 void show_regs(){
-    for (int i = 0; i <= 16; i++)
+    for (int i = 0; i < 16; i++)
         printf("Register %d: %d \n", i, get_reg(i));
 }
 
@@ -80,7 +80,7 @@ void step(){
        case STR:
           //memory store word
 
-	  printf("STR detected\n");
+          printf("STR detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg >15){
@@ -103,7 +103,7 @@ void step(){
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          registers[dest] = registers[r1] + registers[r2];
+          registers[dest] = registers[r1] + registers[r2]; /* TODO HEY! use set_reg() */
           pc += 4;
           break;
        case SUB:
@@ -119,14 +119,16 @@ void step(){
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          registers[dest] = registers[r1] - registers[r2];
+          //registers[dest] = registers[r1] - registers[r2];  /* TODO HEY! use set_reg() */
+          set_reg(registers[dest], registers[r1] - registers[r2]);
+
 
           pc += 4;
 
           break;
        case MUL:
 
-	  printf("DIV detected\n");
+          printf("MUL detected\n");
           //multiply
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
@@ -138,11 +140,13 @@ void step(){
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          registers[dest] = registers[r1] * registers[r2];
+          set_reg(registers[dest], registers[r1] * registers[r2]);
+          //registers[dest] = registers[r1] * registers[r2]; /* TODO HEY! use set_reg() */
+
           pc += 4;
           break;
        case DIV:
-	  printf("DIV detected\n");
+          printf("DIV detected\n");
           //divide
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
@@ -154,12 +158,14 @@ void step(){
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          registers[dest] = registers[r1] / registers[r2];
+          //registers[dest] = registers[r1] / registers[r2]; /* TODO HEY! use set_reg() */
+          set_reg(registers[dest], registers[r1] / registers[r2]);
+
           pc += 4;
 
           break;
        case CMP:
-	  printf("CMP detected\n");
+          printf("CMP detected\n");
           //compare
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
@@ -196,7 +202,7 @@ void step(){
           pc += 4;
           break;
        case B:
-          
+          printf("B detected\n"); 
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -208,6 +214,7 @@ void step(){
           pc = address; //set pc to address unconditionally
           break;
        case BEQ:
+          printf("BEQ detected\n");
           //branch equal to
           reg = inst >> 16 & 0xff;
 
@@ -226,6 +233,7 @@ void step(){
           //do more stuff
           break;
        case BNE:
+          printf("BNE detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) { //check if do-able
@@ -241,6 +249,7 @@ void step(){
           break;
        case BLT:
          //branch less than
+         printf("BLT detected\n");
          reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
          if (address > 1023 || reg > 15) { //check if do-able
@@ -255,6 +264,7 @@ void step(){
          }
          break;
        case BGT:
+         printf("BGT detected\n");
          reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
          if (address > 1023 || reg > 15) { //check if do-able
@@ -270,6 +280,7 @@ void step(){
 
           break;
        case MOV:
+         printf("MOV detected\n");
          /*  WARNING: this may or may not work correctly */ 
          reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
@@ -287,6 +298,7 @@ void step(){
          pc += 4;
          break;
         case BL:
+         printf("BL detected\n");
          /* 
           * This also is an attempt to do something based on assumptions alone */
          reg = inst >> 16 & 0xff;
@@ -299,7 +311,8 @@ void step(){
          
 	  //notice how there is no if or check_bit() condition
          pc = address; //set pc to address unconditionally
-         registers[R14] = pc;
+         set_reg(registers[R14], pc);
+         //registers[R14] = pc;
          break;
           
    }
