@@ -56,7 +56,7 @@ void memory_store_word(int address, unsigned int value){
     unsigned byte3 = (value >> 16) & 0xff;
     unsigned byte4 = (value >> 24) & 0xff;
 
-    printf("%x %x %x %x\n",byte1, byte2, byte3, byte4);
+    //printf("%x %x %x %x\n",byte1, byte2, byte3, byte4);
     //store the memory
     memory_store(address, byte1);
     memory_store(address + 1, byte2);
@@ -84,14 +84,4 @@ void load_memory(char *filename){
         memory_store_word(addr, data_buff);
         addr += 4;
     }    
-    
-    /*
-    char add = data_buff[0];
-    int starting_addr = (int) add;
-//      printf("Value of 'add': %d\n", starting_addr);
-    for(int i = 1; i < 10; i++){
-//	printf("The value: %x\nThe address: %d\n", data_buff[i], starting_addr + (i-1));  
-        memory_store_word(starting_addr + (i-1), data_buff[i]);
-    }   
-*/
 }
