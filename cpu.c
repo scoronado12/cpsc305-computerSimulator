@@ -21,26 +21,26 @@ int get_cpsr(){
 
 
 void show_regs(){
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i <= 16; i++)
         printf("Register %d: %d \n", i, get_reg(i));
 }
 
 
 void step(){
-    int pc = registers[PC]; //PC aka Register 15 
+    int pc = registers[PC]; 
     unsigned int reg;
     unsigned int address; 
+    unsigned int literal; 
     int dest, r1, r2;
-    unsigned int inst = memory_fetch_word(pc); // fetch inst from PC register
+    unsigned int inst = memory_fetch_word(registers[PC]); // fetch
     int opcode = inst >> 24;
-    printf("Opcode: %x\n" , opcode);
+    printf("PC: %x, Inst: %x, Opcode: %d\n" , registers[PC],inst, opcode);
 
-    switch (opcode) {// decode
+   switch (opcode) {// decode
        case LDR: //execute
            printf("LDR detected\n");
 
            reg = inst >> 16 & 0xff;
-
            address = inst & 0xffff;
            if (address > 1023 || reg > 15) {
                printf("Address/Register out of bounds.\n");
@@ -52,24 +52,21 @@ void step(){
            pc += 4;
            break;
        case LDI:
-	   printf("LDI detected\n");
            //LDI memory_fetch
            reg = inst >> 16 & 0xff;
-           address = inst & 0xffff;
-           if (address > 1023 || reg > 15) {
+           literal = inst & 0xffff;
+           if (literal > 1023 || reg > 15) {
                printf("Address/Register out of bounds.\n");
                exit(1);
            }
-           registers[reg] = memory_fetch(address);
-           printf("reg: %d, reg val: 0x%x08x, address: 0x%04x\n", reg, registers[reg], address);
+           registers[reg] = literal;
+           printf("reg: %d, reg val: 0x%x08x, address: 0x%04x\n", reg, registers[reg], literal);
 
            pc += 4;
 
            break;
        case LDX:
-          // LDX
-	   printf("LDX detected\n");
-	   
+          // LDX 
            dest = inst >> 16 & 0xff;
            int offset = inst >> 8 & 0xff;
            r1 = inst & 0xff;
@@ -80,105 +77,68 @@ void step(){
            break;
        case STR:
           //memory store word
-
-          printf("STR detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg >15){
               printf("Address/Register out of bounds.\n");
               exit(1);
           }
-          memory_store_word(address, reg);
+          memory_store_word(address, registers[reg]);
           pc += 4;
           
           break; 
        case ADD:
-          printf("ADD detected\n");
-          reg = inst >> 16 & 0xff;
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
-              printf("Address/Register out of bounds.\n");
-              exit(1);
-          }
-
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          //registers[dest] = registers[r1] + registers[r2]; /* TODO HEY! use set_reg() */
-          set_reg(registers[dest], registers[r1] + registers[r2]);
+          if (dest > 15 || r1 > 15 || r2 > 15) {
+              printf("Register out of bounds.\n");
+              exit(1);
+          }
+          registers[dest] = registers[r1] + registers[r2];
           pc += 4;
           break;
        case SUB:
-          printf("SUB detected\n");
-
-          reg = inst >> 16 & 0xff;
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
-              printf("Address/Register out of bounds.\n");
-              exit(1);
-          }
-
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          //registers[dest] = registers[r1] - registers[r2];  /* TODO HEY! use set_reg() */
-          set_reg(registers[dest], registers[r1] - registers[r2]);
-
-
+          if (dest > 15 || r1 > 15 || r2 > 15) {
+              printf("Register out of bounds.\n");
+              exit(1);
+          }
+          registers[dest] = registers[r1] - registers[r2];
           pc += 4;
-
           break;
        case MUL:
-
-          printf("MUL detected\n");
-          //multiply
-          reg = inst >> 16 & 0xff;
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
-              printf("Address/Register out of bounds.\n");
-              exit(1);
-          }
-
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          set_reg(registers[dest], registers[r1] * registers[r2]);
-          //registers[dest] = registers[r1] * registers[r2]; /* TODO HEY! use set_reg() */
-
+          if (dest > 15 || r1 > 15 || r2 > 15) {
+              printf("Register out of bounds.\n");
+              exit(1);
+          }
+          registers[dest] = registers[r1] * registers[r2];
           pc += 4;
           break;
        case DIV:
-          printf("DIV detected\n");
-          //divide
-          reg = inst >> 16 & 0xff;
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
-              printf("Address/Register out of bounds.\n");
-              exit(1);
-          }
-
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          //registers[dest] = registers[r1] / registers[r2]; /* TODO HEY! use set_reg() */
-          set_reg(registers[dest], registers[r1] / registers[r2]);
-
-          pc += 4;
-
-          break;
-       case CMP:
-          printf("CMP detected\n");
-          //compare
-          reg = inst >> 16 & 0xff;
-          address = inst & 0xffff;
-          if (address > 1023 || reg > 15) {
-              printf("Address/Register out of bounds.\n");
+          if (dest > 15 || r1 > 15 || r2 > 15) {
+              printf("Register out of bounds.\n");
               exit(1);
           }
-
+          registers[dest] = registers[r1] / registers[r2];
+          pc += 4;
+          break;
+       case CMP:
+          //compare
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-
+          if (r1 > 15 || r2 > 15) {
+              printf("Register out of bounds.\n");
+              exit(1);
+          }
           if (registers[r1] == registers[r2]){
               bit_set(&cpsr, Z);
               bit_clear(&cpsr, LT);
@@ -204,7 +164,7 @@ void step(){
           pc += 4;
           break;
        case B:
-          printf("B detected\n"); 
+          
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) {
@@ -216,7 +176,6 @@ void step(){
           pc = address; //set pc to address unconditionally
           break;
        case BEQ:
-          printf("BEQ detected\n");
           //branch equal to
           reg = inst >> 16 & 0xff;
 
@@ -235,7 +194,6 @@ void step(){
           //do more stuff
           break;
        case BNE:
-          printf("BNE detected\n");
           reg = inst >> 16 & 0xff;
           address = inst & 0xffff;
           if (address > 1023 || reg > 15) { //check if do-able
@@ -251,7 +209,6 @@ void step(){
           break;
        case BLT:
          //branch less than
-         printf("BLT detected\n");
          reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
          if (address > 1023 || reg > 15) { //check if do-able
@@ -266,7 +223,6 @@ void step(){
          }
          break;
        case BGT:
-         printf("BGT detected\n");
          reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
          if (address > 1023 || reg > 15) { //check if do-able
@@ -282,47 +238,36 @@ void step(){
 
           break;
        case MOV:
-         printf("MOV detected\n");
          /*  WARNING: this may or may not work correctly */ 
-         reg = inst >> 16 & 0xff;
-         address = inst & 0xffff;
-         if (address > 1023 || reg > 15) {
-             printf("Address/Register out of bounds.\n");
-             exit(1);
-         }
-
          r1 = (inst >> 8) & 0xff;
          r2 = (inst >> 0) ^ 0xff;
+         if (r1 > 15 || r2 > 15) {
+             printf("Register out of bounds.\n");
+             exit(1);
+         }
          registers[r1] = registers[r2];
-
-         bit_clear(&cpsr, registers[r1]);
-
          pc += 4;
          break;
         case BL:
-         printf("BL detected\n");
          /* 
           * This also is an attempt to do something based on assumptions alone */
-         reg = inst >> 16 & 0xff;
          address = inst & 0xffff;
-         if (address > 1023 || reg > 15) {
-             printf("Address/Register out of bounds.\n");
+         if (address > 1023) {
+             printf("Address out of bounds.\n");
              exit(1);
          }
 
          
 	  //notice how there is no if or check_bit() condition
          pc = address; //set pc to address unconditionally
-         set_reg(registers[PC], pc);
-         //registers[R14] = pc;
+         registers[R14] = pc+4;
          break;
           
    }
 
    
-   
-   registers[PC] = pc; //edit made
-   //registers[PC] += pc; //increase program counter by 4 each time
+   // registers[PC] += pc; //increase program counter by 4 each time
+   registers[PC] = pc; //increase program counter by 4 each time
  
 }
 
