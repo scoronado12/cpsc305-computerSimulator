@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <math.h>
 #include "memory_system.h"
 #include "memory.h"
 #include "decoder.h"

@@ -4,4 +4,3 @@ unsigned int memory_fetch_word(int address);
 void memory_dump(int start_address, int num_bytes);
 void memory_store_word(int address, unsigned int value);
 void load_memory(char *filename);
-int hex_to_dec(unsigned int hex_num);
