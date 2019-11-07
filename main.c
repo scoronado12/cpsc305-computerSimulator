@@ -88,6 +88,7 @@ int main(int argc, char **argv) {
 			printf("Enter file name: ");
 			scanf("%s", file_name);
 			load_memory(file_name);
+            printf("Program %s loaded sucessfully!\n", file_name);
 		}
 		else if (strcmp(cmd, "exit") == 0 || strcmp(cmd,"quit") == 0) {
 		    printf("Bye!...\n");

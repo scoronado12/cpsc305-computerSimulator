@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 #include "memory_system.h"
 #include "memory.h"
 #include "decoder.h"
@@ -72,16 +73,17 @@ void load_memory(char *filename){
     fp = fopen(filename, "r");
     unsigned int addr;
     unsigned int data_buff;
-    fscanf(fp, "%x", &addr);
-    
-    
+    fscanf(fp, "%x", &addr); 
+    //set_reg(15, hex_to_dec(addr));
     while(1){
         if (fscanf(fp, "%x", &data_buff) == EOF){ //changed from %d to %x per gusty's instructions
             break;
         }
-        
+
         //memory_store_word(addr += 4, data_buff);
         memory_store_word(addr, data_buff);
         addr += 4;
-    }    
-}
+    }
+
+ }
+

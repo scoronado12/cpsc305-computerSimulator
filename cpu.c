@@ -27,19 +27,20 @@ void show_regs(){
 
 
 void step(){
-    int pc = registers[PC]; 
+    int pc = registers[PC]; //PC aka Register 15 
     unsigned int reg;
     unsigned int address; 
     int dest, r1, r2;
-    unsigned int inst = memory_fetch_word(registers[PC]); // fetch
+    unsigned int inst = memory_fetch_word(pc); // fetch inst from PC register
     int opcode = inst >> 24;
-    printf("Opcode: %d\n" , opcode);
+    printf("Opcode: %x\n" , opcode);
 
-   switch (opcode) {// decode
+    switch (opcode) {// decode
        case LDR: //execute
            printf("LDR detected\n");
 
            reg = inst >> 16 & 0xff;
+
            address = inst & 0xffff;
            if (address > 1023 || reg > 15) {
                printf("Address/Register out of bounds.\n");
@@ -103,7 +104,8 @@ void step(){
           dest = (inst >> 16) & 0xff;
           r1 = (inst >> 8) & 0xff;
           r2 = (inst >> 0) & 0xff;
-          registers[dest] = registers[r1] + registers[r2]; /* TODO HEY! use set_reg() */
+          //registers[dest] = registers[r1] + registers[r2]; /* TODO HEY! use set_reg() */
+          set_reg(registers[dest], registers[r1] + registers[r2]);
           pc += 4;
           break;
        case SUB:
@@ -311,7 +313,7 @@ void step(){
          
 	  //notice how there is no if or check_bit() condition
          pc = address; //set pc to address unconditionally
-         set_reg(registers[R14], pc);
+         set_reg(registers[PC], pc);
          //registers[R14] = pc;
          break;
           
