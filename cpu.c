@@ -32,7 +32,7 @@ void step(){
     unsigned int address; 
     unsigned int literal; 
     int dest, r1, r2;
-    unsigned int inst = memory_fetch_word(registers[PC]); // fetch
+    unsigned int inst = memory_fetch_word(registers[PC]); // fetch from PC reg 14
     int opcode = inst >> 24;
     printf("PC: %x, Inst: %x, Opcode: %d\n" , registers[PC],inst, opcode);
 
